@@ -8,7 +8,7 @@ Vec *vec_create(size_t size_of_each)
   Vec *vec = (Vec *)malloc(sizeof(Vec));
   if (!vec)
     return NULL;
-  vec->data = (float *)malloc(10 * size_of_each);
+  vec->data = (char *)malloc(10 * size_of_each);
   if (!vec->data)
   {
     free(vec);
@@ -21,7 +21,22 @@ Vec *vec_create(size_t size_of_each)
   return vec;
 }
 
-void vec_cpy_arr(Vec *vec, void *arr, int arr_s)
+Vec *vec_from_arr(void *arr, size_t size_of_each, size_t arr_s)
+{
+  Vec *vec = vec_create(size_of_each);
+
+  if (!vec || !arr)
+  {
+    vec_free(vec);
+    return NULL;
+  }
+
+  vec_cpy_arr(vec, arr, arr_s);
+
+  return vec;
+}
+
+void vec_cpy_arr(Vec *vec, void *arr, size_t arr_s)
 {
   if (!vec || !arr)
     return;
@@ -46,9 +61,10 @@ int vec_push(Vec *vec, void *value)
   if (vec->size == vec->capacity)
   {
     vec->capacity *= 2;
-    vec->data = realloc(vec->data, vec->capacity * vec->size_of_each);
-    if (!vec->data)
+    void *temp = realloc(vec->data, vec->capacity * vec->size_of_each);
+    if (!temp)
       return -1;
+    vec->data = temp;
   }
   memcpy((char *)vec->data + vec->size * vec->size_of_each, value, vec->size_of_each);
   vec->size++;
@@ -71,4 +87,32 @@ void *vec_get(const Vec *vec, size_t index)
     return NULL;
 
   return (char *)vec->data + index * vec->size_of_each;
+}
+
+void vec_copy(const Vec *source, Vec *dest)
+{
+  if (!source || !dest)
+    return;
+
+  dest->size = source->size;
+  dest->capacity = source->capacity;
+  dest->size_of_each = source->size_of_each;
+
+  if (dest->data)
+    free(dest->data);
+
+  dest->data = malloc(dest->capacity * dest->size_of_each);
+  if (!dest->data)
+    return;
+
+  memcpy(dest->data, source->data, source->size * source->size_of_each);
+}
+
+void vec_free(Vec *vec)
+{
+  if (vec)
+  {
+    free(vec->data);
+    free(vec);
+  }
 }

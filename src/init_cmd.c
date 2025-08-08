@@ -9,26 +9,24 @@ extern Vec *commands = NULL;
 
 void init_cmd()
 {
-  commands = vec_create(sizeof(Command));
-
   Command cmds[] = {
       {
-          "help",
-          "Show help message",
-          "help [command]",
-          help_cmd,
-          0,
-          1,
+          .name = "help",
+          .description = "Show help message",
+          .usage = "help [command]",
+          .execute = help_cmd,
+          .min_args = 0,
+          .max_args = 1,
       },
       {
-          "about",
-          "Show information about the application",
-          "about",
-          about_cmd,
-          0,
-          0,
+          .name = "about",
+          .description = "Show information about the application",
+          .usage = "about",
+          .execute = about_cmd,
+          .min_args = 0,
+          .max_args = 0,
       },
   };
 
-  vec_cpy_arr(commands, &cmds, sizeof(cmds));
+  commands = vec_from_arr(cmds, sizeof(Command), sizeof(cmds));
 }

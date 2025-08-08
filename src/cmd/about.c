@@ -4,21 +4,24 @@
 
 int about_cmd(int argc, char *argv[])
 {
-  printf("Student Management System CLI\n\
-Description: %s\n\
-Version: %s\n\
-Author: %s\n\
+  printf("Student Management System CLI (v%s)\n\
+%s\n\
 GitHub: %s\n\
-SSH: %s\n\
+SSH: %s\n\n\
+This project is licensed under the MIT License.\n\
+Copyright (c) 2023 %s\n\n\
 Usage: sms [command] [options]\n\
+",
+     VERSION, PROJECT_DESCRIPTION, GITHUB, SSH, AUTHOR);
+
+  printf("\
 Available commands:\n\
   about - Show this information about the project\n\
   help - Show help message(general or specific)\n\
   add - Add a new student\n\
   list - List all students\n\
   delete - Delete a student\n\
-  update - Update student information\n",
-         PROJECT_DESCRIPTION, VERSION, AUTHOR, GITHUB, SSH);
+  update - Update student information\n");
 
   return 0;
 }

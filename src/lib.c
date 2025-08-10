@@ -28,7 +28,7 @@ Vec *parse_csv_record(const char *record)
         vec_free(vec);
         return NULL;
       }
-      
+
       cur_i = 0;
       continue;
     }
@@ -41,7 +41,8 @@ Vec *parse_csv_record(const char *record)
       }
       else if (is_inside_quotes)
       {
-        if (record[i + 1] == ',' || record[i + 1] == '\0') {
+        if (record[i + 1] == ',' || record[i + 1] == '\0')
+        {
           is_inside_quotes = 0;
           continue;
         }
@@ -51,7 +52,7 @@ Vec *parse_csv_record(const char *record)
         }
       }
     }
-    cur_val[cur_i++] = record[i];
+    if(record[i] != '\n') cur_val[cur_i++] = record[i];
   }
 
   return vec;
@@ -62,30 +63,48 @@ CSVFile *read_student_data(char *fileurl)
   CSVFile *csv = malloc(sizeof(CSVFile));
   if (!csv)
   {
-    fprintf(stderr, "Memory allocation failed for CSVFile.\n");
+    printf("read_student_data: Memory allocation failed for CSVFile.\n");
     return NULL;
   }
 
   csv->file = fopen(fileurl == NULL ? OUT_DIR OUT_NAME : fileurl, "r");
   if (!csv->file)
   {
-    fprintf(stderr, "Could not open file %s%s for reading.\n", OUT_DIR, OUT_NAME);
+    printf("read_student_data: Could not open file %s for reading.\n", fileurl == NULL ? OUT_DIR OUT_NAME : fileurl);
     free(csv);
     return NULL;
   }
 
-  Vec *headers = vec_create(sizeof(char *));
-  char *headerStr = malloc(256);
+  char header_str[256];
 
-  if (!headers || !headerStr)
+  if(fileurl) {
+    fgets(header_str, sizeof(header_str), csv->file);
+  } else {
+    strcpy(header_str, "roll,name,gender,phone,f_name,m_name,address");
+  }
+
+  csv->headers = parse_csv_record(header_str);
+
+  if (!csv->headers)
   {
-    fprintf(stderr, "Memory allocation failed for headers vector or header string.\n");
+    printf("read_student_data: Memory allocation failed for header vector.\n");
     fclose(csv->file);
     free(csv);
     return NULL;
   }
 
-  fgets(headerStr, strlen(headerStr), csv->file);
+  // if(fileurl) {
+  //   printf("%zu\n", csv->headers->size);
+  //   printf("header_str: %s\n", header_str);
+  //   for (size_t i = 0; i < csv->headers->size; i++)
+  //   {
+  //     char *header = *(char **)vec_get(csv->headers, i);
+  //     if (header)
+  //     {
+  //       printf("Header %zu: %s\n", i, header);
+  //     }
+  //   }
+  // }
 
   return csv;
 }
@@ -98,7 +117,7 @@ Student *get_next_student(CSVFile *csv)
   Student *student = malloc(sizeof(Student));
   if (!student)
   {
-    fprintf(stderr, "Memory allocation failed for student.\n");
+    printf("get_next_student: Memory allocation failed for student.\n");
     return NULL;
   }
 
@@ -108,13 +127,58 @@ Student *get_next_student(CSVFile *csv)
   if (fgets(buffer, sizeof(buffer), csv->file) == NULL)
   {
     free(student);
-    return NULL; // End of file or error
+    return NULL;
   }
 
-  // Parse the line into student fields
-  // sscanf(buffer, "%[^,],%ld,%c,%[^,],%[^,],%[^,]", student->name, &student->roll, &student->gender, student->phone, student->f_name, student->m_name, student->address);
+  Vec *parsed_record = parse_csv_record(buffer);
+  if (!parsed_record)
+  {
+    printf("get_next_student: Failed to parse CSV record.\n");
+    free(student);
+    return NULL;
+  }
+
+  for (size_t i = 0; i < parsed_record->size; i++)
+  {
+    char *cur_header = lower_case(*(char **)vec_get(csv->headers, i));
+    char *value = *(char **)vec_get(parsed_record, i);
+
+    void *property = get_matching_property(student, cur_header);
+    if (!property)
+    {
+      printf("get_next_student: Unknown header '%s' in CSV file. Skipping this header.\n", cur_header);
+      continue;
+    }
+
+    if(strcmp(cur_header, "roll") == 0) {
+      *(long *)property = strtol(value, NULL, 10);
+    } else if(strcmp(cur_header, "gender") == 0) {
+      *(Gender *)property = *value == 'M' ? MALE : FEMALE;
+    } else {
+      *(char **)property = value;
+    }
+  }
 
   return student;
+}
+
+void *get_matching_property(Student *student, const char *property_name)
+{
+  if (strcmp(property_name, "name") == 0)
+    return &student->name;
+  else if (strcmp(property_name, "roll") == 0)
+    return &student->roll;
+  else if (strcmp(property_name, "phone") == 0)
+    return &student->phone;
+  else if (strcmp(property_name, "f_name") == 0)
+    return &student->f_name;
+  else if (strcmp(property_name, "m_name") == 0)
+    return &student->m_name;
+  else if (strcmp(property_name, "address") == 0)
+    return &student->address;
+  else if (strcmp(property_name, "gender") == 0)
+    return &student->gender;
+  return NULL;
 }
 
 void cpy_partial_student(Student *source, Student *dest)
@@ -141,13 +205,41 @@ void cpy_partial_student(Student *source, Student *dest)
   {
     if (dest->marks)
     {
+      for(size_t i = 0; i < source->marks->size; i++) {
+        Marks *source_marks = (Marks *)vec_get(source->marks, i);
+        int is_unique = 1;
+        for(size_t j = 0; j < dest->marks->size; j++) {
+          Marks *dest_marks = (Marks *)vec_get(dest->marks, j);
+          if(dest_marks->student->roll == source_marks->student->roll && dest_marks->subject == source_marks->subject && dest_marks->semester == source_marks->semester) {
+            is_unique = 0;
+            int choice;
+            printf("Colliding marks found for roll no. %ld (%d sem) in subject %s\n  Choose one of the action - (0) retain   (1) override", source_marks->student->roll, source_marks->semester, source_marks->subject);
+            scanf("%d", &choice);
+
+            switch(choice) {
+              case 0: break;
+              case 1: {
+                *source_marks = *dest_marks;
+                break;
+              }
+              default: {
+                printf("  Didn't match any options, retaining the existing value.\n");
+              }
+            }
+          }
+        }
+        
+        if(is_unique) {
+          vec_push(dest->marks, source_marks);
+        }
+      }
     }
     else
     {
       dest->marks = vec_create(sizeof(Marks));
       if (!dest->marks)
       {
-        fprintf(stderr, "Memory allocation failed for student marks vector.\n");
+        printf("cpy_partial_student: Memory allocation failed for student marks vector.\n");
         return;
       }
       vec_copy(source->marks, dest->marks);
@@ -155,17 +247,29 @@ void cpy_partial_student(Student *source, Student *dest)
   }
 }
 
-void write_student_data(Student *student)
+int write_student_data(Student *student)
 {
+  if(!student) {
+    printf("write_student_data: Student is NULL.\n");
+    return 1;
+  }
+  printf("write_student_data: Writing student data for roll no. %ld\n", student->roll);
   FILE *file = fopen(OUT_DIR OUT_NAME, "a");
+
   if (!file)
   {
-    fprintf(stderr, "Could not open file %s%s for writing.\n", OUT_DIR, OUT_NAME);
-    return;
+    make_dir(OUT_DIR);
+    file = fopen(OUT_DIR OUT_NAME, "a");
+    if (file == NULL){
+      printf("write_student_data: Could not open file %s%s for writing.\n", OUT_DIR, OUT_NAME);
+      return 1;
+    }
   }
 
-  fprintf(file, "%s,%ld,%c,%s,%s,%s,%s\n", student->name, student->roll, student->gender, student->phone, student->f_name, student->m_name, student->address);
+  fprintf(file, "\"%ld\",\"%s\",\"%c\",\"%s\",\"%s\",\"%s\",\"%s\"\n", student->roll, make_csv_friendly(student->name), student->gender, make_csv_friendly(student->phone), make_csv_friendly(student->f_name), make_csv_friendly(student->m_name), make_csv_friendly(student->address));
   fclose(file);
+
+  return 0;
 }
 
 void free_student(Student *student)
@@ -202,12 +306,12 @@ void free_student_data(CSVFile *file)
 
 void init_student(Student *student)
 {
-  student->name = NULL;
+  student->name = "";
   student->roll = 0;
-  student->phone = NULL;
-  student->f_name = NULL;
-  student->m_name = NULL;
-  student->address = NULL;
+  student->phone = "";
+  student->f_name = "";
+  student->m_name = "";
+  student->address = "";
   student->gender = MALE;
   student->marks = NULL;
 }

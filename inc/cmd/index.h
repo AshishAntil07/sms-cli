@@ -1,6 +1,11 @@
 #ifndef INDEX_H
 #define INDEX_H
 
+
+#include "cmd/help.h"
+#include "cmd/about.h"
+#include "cmd/add.h"
+
 typedef struct {
   char *name;          // Name of the command
   char *description;   // Description of the command

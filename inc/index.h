@@ -3,9 +3,11 @@
 
 #include "../config.h"
 #include "utils/vec.h"
+#include "lib.h"
 
 extern Vec *commands;
+extern Vec *students;
 
-void init_cmd();
+void init();
 
 #endif

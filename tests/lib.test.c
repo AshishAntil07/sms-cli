@@ -20,13 +20,13 @@ int test_parse_csv_record(pcr_args **args)
   Vec *result = parse_csv_record(record);
   if (!result)
   {
-    fprintf(stderr, "  Failed to parse CSV record: %s\n", record);
+    printf("  Failed to parse CSV record: %s\n", record);
     return 1;
   }
 
   if (result->size != expected_result->size)
   {
-    fprintf(stderr, "  Unexpected number of fields in CSV record: %s\n  Expected - %zu   Got - %zu\n", record, expected_result->size, result->size);
+    printf("  Unexpected number of fields in CSV record: %s\n  Expected - %zu   Got - %zu\n", record, expected_result->size, result->size);
     for (size_t i = 0; i < result->size; i++)
     {
       printf("  %s\n", *(char **)vec_get(result, i));
@@ -41,7 +41,7 @@ int test_parse_csv_record(pcr_args **args)
     const char *actual = *(char **)vec_get(result, i);
     if (strcmp(expected, actual) != 0)
     {
-      fprintf(stderr, "  Field %zu does not match: expected \"%s\", got \"%s\"\n", i, expected, actual);
+      printf("  Field %zu does not match: expected \"%s\", got \"%s\"\n", i, expected, actual);
       vec_free(result);
       return 1;
     }

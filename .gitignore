@@ -37,6 +37,9 @@
 *.hex
 dist
 
+# Output
+data
+
 # Debug files
 *.dSYM/
 *.su

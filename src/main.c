@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-  init_cmd();
+  init();
 
 #ifndef TEST
 

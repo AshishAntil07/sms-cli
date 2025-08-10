@@ -2,9 +2,18 @@
 #define LIB_H
 
 #include "utils/vec.h"
+#include "utils/utils.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#if defined(_WIN32)
+#include <direct.h>
+#define make_dir(path) _mkdir(path)
+#else
+#include <sys/stat.h>
+#define make_dir(path) mkdir(path, 0755)
+#endif
 
 typedef struct Student Student;
 
@@ -43,12 +52,13 @@ typedef struct CSVFile
 
 Vec *parse_csv_record(const char *record);
 CSVFile *read_student_data(char *fileurl);
+void *get_matching_property(Student *, const char *);
 Student *get_next_student(CSVFile *file);
-void write_student_data(Student *student);
+int write_student_data(Student *student);
 void free_student(Student *student);
 void free_marks(Marks *marks);
 void free_student_data(CSVFile *file);
 void init_student(Student *student);
-
+void cpy_partial_student(Student *source, Student *dest);
 
 #endif

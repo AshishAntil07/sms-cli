@@ -1,5 +1,8 @@
 #include "lib.h"
 #include "../config.h"
+#include "index.h"
+
+extern Vec *students;
 
 Vec *parse_csv_record(const char *record)
 {
@@ -52,7 +55,8 @@ Vec *parse_csv_record(const char *record)
         }
       }
     }
-    if(record[i] != '\n') cur_val[cur_i++] = record[i];
+    if (record[i] != '\n')
+      cur_val[cur_i++] = record[i];
   }
 
   return vec;
@@ -77,9 +81,12 @@ CSVFile *read_student_data(char *fileurl)
 
   char header_str[256];
 
-  if(fileurl) {
+  if (fileurl)
+  {
     fgets(header_str, sizeof(header_str), csv->file);
-  } else {
+  }
+  else
+  {
     strcpy(header_str, "roll,name,gender,phone,f_name,m_name,address");
   }
 
@@ -150,11 +157,16 @@ Student *get_next_student(CSVFile *csv)
       continue;
     }
 
-    if(strcmp(cur_header, "roll") == 0) {
+    if (strcmp(cur_header, "roll") == 0)
+    {
       *(long *)property = strtol(value, NULL, 10);
-    } else if(strcmp(cur_header, "gender") == 0) {
+    }
+    else if (strcmp(cur_header, "gender") == 0)
+    {
       *(Gender *)property = *value == 'M' ? MALE : FEMALE;
-    } else {
+    }
+    else
+    {
       *(char **)property = value;
     }
   }
@@ -205,31 +217,39 @@ void cpy_partial_student(Student *source, Student *dest)
   {
     if (dest->marks)
     {
-      for(size_t i = 0; i < source->marks->size; i++) {
+      for (size_t i = 0; i < source->marks->size; i++)
+      {
         Marks *source_marks = (Marks *)vec_get(source->marks, i);
         int is_unique = 1;
-        for(size_t j = 0; j < dest->marks->size; j++) {
+        for (size_t j = 0; j < dest->marks->size; j++)
+        {
           Marks *dest_marks = (Marks *)vec_get(dest->marks, j);
-          if(dest_marks->student->roll == source_marks->student->roll && dest_marks->subject == source_marks->subject && dest_marks->semester == source_marks->semester) {
+          if (dest_marks->student->roll == source_marks->student->roll && dest_marks->subject == source_marks->subject && dest_marks->semester == source_marks->semester)
+          {
             is_unique = 0;
             int choice;
             printf("Colliding marks found for roll no. %ld (%d sem) in subject %s\n  Choose one of the action - (0) retain   (1) override", source_marks->student->roll, source_marks->semester, source_marks->subject);
             scanf("%d", &choice);
 
-            switch(choice) {
-              case 0: break;
-              case 1: {
-                *source_marks = *dest_marks;
-                break;
-              }
-              default: {
-                printf("  Didn't match any options, retaining the existing value.\n");
-              }
+            switch (choice)
+            {
+            case 0:
+              break;
+            case 1:
+            {
+              *source_marks = *dest_marks;
+              break;
+            }
+            default:
+            {
+              printf("  Didn't match any options, retaining the existing value.\n");
+            }
             }
           }
         }
-        
-        if(is_unique) {
+
+        if (is_unique)
+        {
           vec_push(dest->marks, source_marks);
         }
       }
@@ -247,21 +267,60 @@ void cpy_partial_student(Student *source, Student *dest)
   }
 }
 
-int write_student_data(Student *student)
+int write_student_data()
 {
-  if(!student) {
-    printf("write_student_data: Student is NULL.\n");
+  char *fileurl = OUT_DIR OUT_NAME;
+  char *write_str = calloc(256 * students->size, sizeof(char));
+  if (!write_str)
+  {
+    printf("write_student_data: Memory allocation failed for write string.\n");
     return 1;
   }
-  printf("write_student_data: Writing student data for roll no. %ld\n", student->roll);
+  for (size_t i = 0; i < students->size; i++)
+  {
+    Student *student = vec_get(students, i);
+    if (!student)
+      continue;
+    if(!student->name) {
+      printf("write_student_data: Faulty data found in students vector, potentially due to poorly structured %s%s file or a bug in initialization code.\n", OUT_DIR, OUT_NAME);
+      return 1;
+    }
+    sprintf(write_str + strlen(write_str), "\"%ld\",\"%s\",\"%c\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
+            student->roll, make_csv_friendly(student->name), student->gender, make_csv_friendly(student->phone), make_csv_friendly(student->f_name), make_csv_friendly(student->m_name), make_csv_friendly(student->address));
+  }
+
+  printf("write_student_data: Writing student data to %s\n", fileurl);
+  FILE *file = fopen(fileurl, "w");
+  if (!file)
+  {
+    printf("write_student_data: Could not open file %s for writing.\n", fileurl);
+    free(write_str);
+    return 1;
+  }
+
+  fprintf(file, "%s", write_str);
+  fclose(file);
+  free(write_str);
+  return 0;
+}
+
+int append_student_data(Student *student)
+{
+  if (!student)
+  {
+    printf("append_student_data: Student is NULL.\n");
+    return 1;
+  }
+  printf("append_student_data: Writing student data for roll no. %ld\n", student->roll);
   FILE *file = fopen(OUT_DIR OUT_NAME, "a");
 
   if (!file)
   {
     make_dir(OUT_DIR);
     file = fopen(OUT_DIR OUT_NAME, "a");
-    if (file == NULL){
-      printf("write_student_data: Could not open file %s%s for writing.\n", OUT_DIR, OUT_NAME);
+    if (file == NULL)
+    {
+      printf("append_student_data: Could not open file %s%s for writing.\n", OUT_DIR, OUT_NAME);
       return 1;
     }
   }

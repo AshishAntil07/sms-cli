@@ -40,7 +40,7 @@ char *lower_case(const char *str) {
 }
 
 char *make_csv_friendly(const char *str) {
-  char *csv_friendly = malloc(2*strlen(str));
+  char *csv_friendly = calloc(2*strlen(str), sizeof(char));
   if(!csv_friendly) return NULL;
 
   size_t j = 0;
@@ -48,6 +48,7 @@ char *make_csv_friendly(const char *str) {
     csv_friendly[j++] = str[i];
     if(str[i]=='"') csv_friendly[j++] = '"';
   }
+  csv_friendly[j] = '\0';
 
   return csv_friendly;
 }

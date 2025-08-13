@@ -1,5 +1,19 @@
 #include "cmd/add.h"
 #include "lib.h"
+#include "index.h"
+
+extern Vec *students;
+
+typedef enum Headers
+{
+  ROLL = 1,
+  NAME,
+  GENDER,
+  PHONE,
+  F_NAME,
+  M_NAME,
+  ADDRESS
+} Headers;
 
 int add_cmd(int argc, char *argv[])
 {
@@ -12,20 +26,37 @@ int add_cmd(int argc, char *argv[])
 
   init_student(new_student);
 
-  if (argc > 2)
+  if (argc == 8)
   {
-    new_student->name = argv[1] ? argv[1] : NULL;
-    new_student->roll = argc > 2 ? strtol(argv[2], NULL, 10) : 0;
-    new_student->gender = argc > 3 ? (Gender)argv[3][0] : MALE;
-    new_student->phone = argc > 4 ? argv[4] : NULL;
-    new_student->f_name = argc > 5 ? argv[5] : NULL;
-    new_student->m_name = argc > 6 ? argv[6] : NULL;
-    new_student->address = argc > 7 ? argv[7] : NULL;
+    new_student->roll = strtol(argv[ROLL], NULL, 10);
+    new_student->name = argv[NAME];
+    new_student->gender = (Gender)argv[GENDER][0];
+    new_student->phone = argv[PHONE];
+    new_student->f_name = argv[F_NAME];
+    new_student->m_name = argv[M_NAME];
+    new_student->address = argv[ADDRESS];
 
-    if (write_student_data(new_student) != 0)
+    Student *existing_student = NULL;
+
+    for (size_t i = 0; i < students->size; i++)
+    {
+      Student *s = (Student *)vec_get(students, i);
+      if (s->roll == new_student->roll)
+      {
+        existing_student = s;
+        break;
+      }
+    }
+
+    if (existing_student)
+    {
+      printf("add_cmd: Student with roll no. %ld already exists. Merging data...\n", new_student->roll);
+      cpy_partial_student(new_student, existing_student);
+      write_student_data();
+    }
+    else if (append_student_data(new_student) != 0)
     {
       printf("add_cmd: Failed to write student data(roll no. %ld).\n", new_student->roll);
-      return 1;
     }
 
     printf("Successfully added student!\n");
@@ -39,9 +70,23 @@ int add_cmd(int argc, char *argv[])
       int suc_student_count = 0, student_count = 0;
       while (new_student)
       {
-        cpy_partial_student(new_student, new_student);
+        Student *existing_student = NULL;
+        for (size_t i = 0; i < students->size; i++)
+        {
+          Student *s = vec_get(students, i);
+          if (s->roll == new_student->roll)
+          {
+            existing_student = s;
+            break;
+          }
+        }
 
-        if (write_student_data(new_student) != 0)
+        if (existing_student)
+        {
+          printf("add_cmd: Student with roll no. %ld already exists. Merging data...\n", new_student->roll);
+          cpy_partial_student(new_student, existing_student);
+        }
+        if ((existing_student && (write_student_data() != 0)) || append_student_data(new_student) != 0)
         {
           printf("add_cmd: Failed to write student data(roll no. %ld).\n", new_student->roll);
         }

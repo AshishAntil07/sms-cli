@@ -20,7 +20,7 @@ Available commands:\n\
   help - Show help message(general or specific)\n\
   add - Add a new student\n\
   list - List all students\n\
-  delete - Delete a student\n\
+  remove - Remove a student\n\
   update - Update student information\n");
 
   return 0;

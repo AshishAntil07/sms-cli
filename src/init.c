@@ -9,7 +9,7 @@ extern Vec *students = NULL;
 
 void init()
 {
-  Command cmds[] = {
+  static Command cmds[] = {
       {
           .name = "help",
           .description = "Show help message",
@@ -33,7 +33,16 @@ void init()
           .execute = add_cmd,
           .min_args = 1,
           .max_args = 7,
-      }};
+      },
+      {
+          .name = "remove",
+          .description = "Remove a student by roll number",
+          .usage = "remove <roll>",
+          .execute = remove_cmd,
+          .min_args = 1,
+          .max_args = 1,
+      },
+  };
 
   commands = vec_from_arr(cmds, sizeof(Command), sizeof(cmds));
   if (!commands)

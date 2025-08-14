@@ -1,5 +1,3 @@
-#include "lib.h"
-#include "../config.h"
 #include "index.h"
 
 extern Vec *students;
@@ -44,7 +42,7 @@ Vec *parse_csv_record(const char *record)
       }
       else if (is_inside_quotes)
       {
-        if (record[i + 1] == ',' || record[i + 1] == '\0')
+        if (record[i + 1] == ',' || record[i + 1] == '\0' || record[i+1] == '\n')
         {
           is_inside_quotes = 0;
           continue;
@@ -281,7 +279,8 @@ int write_student_data()
     Student *student = vec_get(students, i);
     if (!student)
       continue;
-    if(!student->name) {
+    if (!student->name)
+    {
       printf("write_student_data: Faulty data found in students vector, potentially due to poorly structured %s%s file or a bug in initialization code.\n", OUT_DIR, OUT_NAME);
       return 1;
     }

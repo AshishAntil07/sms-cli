@@ -24,4 +24,14 @@ typedef struct parse_csv_record_args {
 } pcr_args;
 int test_parse_csv_record(pcr_args **args);
 
+typedef struct vector_remove_input {
+  Vec *vector;
+  size_t index;
+} vr_input;
+typedef struct vector_remove_args {
+  vr_input input;
+  Vec *expected;
+} vr_args;
+int test_vector_remove(vr_args **args);
+
 #endif

@@ -81,6 +81,22 @@ void *vec_pop(Vec *vec)
   return (char *)vec->data + vec->size * vec->size_of_each;
 }
 
+void *vec_remove(Vec *vec, size_t index)
+{
+  if (!vec || index >= vec->size)
+    return NULL;
+
+  void *removed = (char *)vec->data + index * vec->size_of_each;
+
+  memmove((char *)vec->data + index * vec->size_of_each,
+          (char *)vec->data + (index + 1) * vec->size_of_each,
+          (vec->size - index - 1) * vec->size_of_each);
+
+  vec->size--;
+
+  return removed;
+}
+
 void *vec_get(const Vec *vec, size_t index)
 {
   if (index >= vec->size)

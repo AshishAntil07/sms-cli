@@ -67,7 +67,7 @@ int add_cmd(int argc, char *argv[])
     if (csv)
     {
       new_student = get_next_student(csv);
-      int suc_student_count = 0, student_count = 0;
+      int student_count = 0;
       while (new_student)
       {
         Student *existing_student = NULL;
@@ -86,22 +86,29 @@ int add_cmd(int argc, char *argv[])
           printf("add_cmd: Student with roll no. %ld already exists. Merging data...\n", new_student->roll);
           cpy_partial_student(new_student, existing_student);
         }
-        if ((existing_student && (write_student_data() != 0)) || append_student_data(new_student) != 0)
-        {
-          printf("add_cmd: Failed to write student data(roll no. %ld).\n", new_student->roll);
-        }
         else
-          suc_student_count++;
+        {
+          vec_push(students, new_student);
+        }
 
         student_count++;
-
         new_student = get_next_student(csv);
+      }
+
+      if (write_student_data() != 0)
+      {
+        printf("add_cmd: Failed to write %s file.\n", OUT_DIR OUT_NAME);
+        if (new_student)
+          free_student(new_student);
+        free_student_data(csv);
+
+        return 1;
       }
 
       if (new_student)
         free_student(new_student);
       free_student_data(csv);
-      printf("Added %d/%d students from CSV file successfully!\n", suc_student_count, student_count);
+      printf("Added %d students from CSV file successfully!\n", student_count);
     }
   }
 

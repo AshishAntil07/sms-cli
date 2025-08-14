@@ -16,7 +16,7 @@ int test_parse_csv_record(pcr_args **args)
     printf("  expected_result null reference: %p\n", expected_result);
     return 1;
   }
-
+  
   Vec *result = parse_csv_record(record);
   if (!result)
   {
@@ -47,7 +47,6 @@ int test_parse_csv_record(pcr_args **args)
     }
   }
 
-  // Free the result vector
   vec_free(result);
   return 0;
 }

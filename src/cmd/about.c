@@ -18,7 +18,7 @@ Usage: sms [command] [options]\n\
 Available commands:\n\
   about - Show this information about the project\n\
   help - Show help message(general or specific)\n\
-  add - Add a new student\n\
+  add - Add a new student or merge student information\n\
   list - List all students\n\
   remove - Remove a student\n\
   update - Update student information\n");

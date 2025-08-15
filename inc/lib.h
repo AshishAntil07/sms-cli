@@ -37,6 +37,7 @@ typedef struct Student
   char *name;
   long roll;
   char *phone;
+  char *email;
   char *f_name;
   char *m_name;
   char *address;

@@ -6,6 +6,7 @@
 #include "cmd/about.h"
 #include "cmd/add.h"
 #include "cmd/remove.h"
+#include "cmd/list.h"
 
 typedef struct {
   char *name;          // Name of the command

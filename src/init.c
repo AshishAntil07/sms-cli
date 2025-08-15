@@ -13,7 +13,7 @@ void init()
       {
           .name = "help",
           .description = "Show help message",
-          .usage = "help [command]",
+          .usage = "help <command>",
           .execute = help_cmd,
           .min_args = 0,
           .max_args = 1,
@@ -41,6 +41,14 @@ void init()
           .execute = remove_cmd,
           .min_args = 1,
           .max_args = 1,
+      },
+      {
+          .name = "list",
+          .description = "List all students from a category(if specified)",
+          .usage = "list [category] [value]",
+          .execute = list_cmd,
+          .min_args = 0,
+          .max_args = 2,
       },
   };
 

@@ -61,9 +61,9 @@ int add_cmd(int argc, char *argv[])
 
     printf("Successfully added student!\n");
   }
-  else if (argc == 2 || (argc == 3 && strcmp(argv[2], "--csv") == 0))
+  else if (argc == 2 || (argc == 3 && strcmp(argv[1], "--csv") == 0))
   {
-    CSVFile *csv = read_student_data(argv[1]);
+    CSVFile *csv = read_student_data(argv[(argc == 3 && strcmp(argv[2], "--csv") == 0)?2:1]);
     if (csv)
     {
       new_student = get_next_student(csv);

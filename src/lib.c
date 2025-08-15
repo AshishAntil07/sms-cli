@@ -85,7 +85,7 @@ CSVFile *read_student_data(char *fileurl)
   }
   else
   {
-    strcpy(header_str, "roll,name,gender,phone,f_name,m_name,address");
+    strcpy(header_str, "roll,name,gender,phone,email,f_name,m_name,address");
   }
 
   csv->headers = parse_csv_record(header_str);
@@ -147,7 +147,7 @@ Student *get_next_student(CSVFile *csv)
   {
     char *cur_header = lower_case(*(char **)vec_get(csv->headers, i));
     char *value = *(char **)vec_get(parsed_record, i);
-
+    
     void *property = get_matching_property(student, cur_header);
     if (!property)
     {
@@ -169,6 +169,10 @@ Student *get_next_student(CSVFile *csv)
     }
   }
 
+  if(parsed_record->size < csv->headers->size) {
+    return NULL;
+  }
+  
   return student;
 }
 
@@ -188,6 +192,8 @@ void *get_matching_property(Student *student, const char *property_name)
     return &student->address;
   else if (strcmp(property_name, "gender") == 0)
     return &student->gender;
+  else if (strcmp(property_name, "email") == 0)
+    return &student->email;
   return NULL;
 }
 
@@ -210,6 +216,8 @@ void cpy_partial_student(Student *source, Student *dest)
     dest->m_name = strdup(source->m_name);
   if (source->address)
     dest->address = strdup(source->address);
+  if (source->email)
+    dest->email = strdup(source->email);
 
   if (source->marks)
   {
@@ -284,8 +292,7 @@ int write_student_data()
       printf("write_student_data: Faulty data found in students vector, potentially due to poorly structured %s%s file or a bug in initialization code.\n", OUT_DIR, OUT_NAME);
       return 1;
     }
-    sprintf(write_str + strlen(write_str), "\"%ld\",\"%s\",\"%c\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
-            student->roll, make_csv_friendly(student->name), student->gender, make_csv_friendly(student->phone), make_csv_friendly(student->f_name), make_csv_friendly(student->m_name), make_csv_friendly(student->address));
+    sprintf(write_str + strlen(write_str), "%s\n", get_student_csv_string(student, 256));
   }
 
   printf("write_student_data: Writing student data to %s\n", fileurl);
@@ -324,7 +331,7 @@ int append_student_data(Student *student)
     }
   }
 
-  fprintf(file, "\"%ld\",\"%s\",\"%c\",\"%s\",\"%s\",\"%s\",\"%s\"\n", student->roll, make_csv_friendly(student->name), student->gender, make_csv_friendly(student->phone), make_csv_friendly(student->f_name), make_csv_friendly(student->m_name), make_csv_friendly(student->address));
+  fprintf(file, "%s\n", get_student_csv_string(student, 256));
   fclose(file);
 
   return 0;
@@ -336,6 +343,7 @@ void free_student(Student *student)
   {
     free(student->name);
     free(student->phone);
+    free(student->email);
     free(student->f_name);
     free(student->m_name);
     free(student->address);
@@ -367,6 +375,7 @@ void init_student(Student *student)
   student->name = "";
   student->roll = 0;
   student->phone = "";
+  student->email = "";
   student->f_name = "";
   student->m_name = "";
   student->address = "";

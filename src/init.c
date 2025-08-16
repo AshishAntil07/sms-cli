@@ -29,7 +29,7 @@ void init()
       {
           .name = "add",
           .description = "Add a new student",
-          .usage = "add <name>",
+          .usage = "add <roll> <name> <gender> <phone> <email> <f_name> <m_name> <address> | add [--csv] <csv_file>",
           .execute = add_cmd,
           .min_args = 1,
           .max_args = 8,
@@ -37,10 +37,10 @@ void init()
       {
           .name = "remove",
           .description = "Remove a student by roll number",
-          .usage = "remove <roll>",
+          .usage = "remove <...roll>",
           .execute = remove_cmd,
           .min_args = 1,
-          .max_args = 1,
+          .max_args = 1000000,
       },
       {
           .name = "list",

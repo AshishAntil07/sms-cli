@@ -32,7 +32,7 @@ void init()
           .usage = "add <name>",
           .execute = add_cmd,
           .min_args = 1,
-          .max_args = 7,
+          .max_args = 8,
       },
       {
           .name = "remove",

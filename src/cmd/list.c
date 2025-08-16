@@ -89,6 +89,14 @@ Vec *get_students_by_property(const char *property, const char *value)
       }
       continue;
     }
+    else if(strcmp(property, "gender") == 0) {
+      if (property_value && (*(char *)property_value == value[0] || *(char *)property_value == (value[0] == 'M' ? 'M' : 'F')))
+      {
+        vec_push(result, student);
+      }
+      continue;
+    }
+    
     if (property_value && strcmp(*(char **)property_value, value) == 0)
     {
       vec_push(result, student);

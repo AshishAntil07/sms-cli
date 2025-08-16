@@ -10,6 +10,7 @@ typedef enum Headers
   NAME,
   GENDER,
   PHONE,
+  EMAIL,
   F_NAME,
   M_NAME,
   ADDRESS
@@ -26,12 +27,13 @@ int add_cmd(int argc, char *argv[])
 
   init_student(new_student);
 
-  if (argc == 8)
+  if (argc == 9)
   {
     new_student->roll = strtol(argv[ROLL], NULL, 10);
     new_student->name = argv[NAME];
     new_student->gender = (Gender)argv[GENDER][0];
     new_student->phone = argv[PHONE];
+    new_student->email = argv[EMAIL];
     new_student->f_name = argv[F_NAME];
     new_student->m_name = argv[M_NAME];
     new_student->address = argv[ADDRESS];

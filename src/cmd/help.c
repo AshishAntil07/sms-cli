@@ -29,9 +29,10 @@ int help_cmd(int argc, char *argv[])
       {
         printf("Name: %s\nDescription: %s\nUsage: %s\nArguments:\n  min: %d\n  max: %d\n",
                cmd.name, cmd.description, cmd.usage, cmd.min_args, cmd.max_args);
-        return 0;
+        break;
       }
     }
+    printf("\narguments - <required>, [optional]\n");
   }
 
   return 0;

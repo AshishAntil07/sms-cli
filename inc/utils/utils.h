@@ -35,6 +35,7 @@ PadStudent *get_pad_student(Vec *students);
 PadStudent *merge_pad_student(PadStudent *pad1, PadStudent *pad2);
 char *get_student_csv_string(Student *student, size_t len);
 char **get_student_string(Vec *students, PadStudent *stpad);
-
+int is_int_in_array(int *arr, int size, int value);
+int is_str_in_array(char **arr, int size, const char *value);
 
 #endif

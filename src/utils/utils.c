@@ -183,3 +183,23 @@ char **get_student_string(Vec *students, PadStudent *stpad)
 
   return student_strings;
 }
+
+int is_int_in_array(int *arr, int size, int value)
+{
+  for (int i = 0; i < size; i++)
+  {
+    if (arr[i] == value)
+      return 1;
+  }
+  return 0;
+}
+
+int is_str_in_array(char **arr, int size, const char *value)
+{
+  for (int i = 0; i < size; i++)
+  {
+    if (strcmp(arr[i], value) == 0)
+      return 1;
+  }
+  return 0;
+}

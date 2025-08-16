@@ -55,6 +55,7 @@ Vec *parse_csv_record(const char *record);
 CSVFile *read_student_data(char *fileurl);
 void *get_matching_property(Student *, const char *);
 Student *get_next_student(CSVFile *file);
+int update_student_property(Student *student, const char *property_name, const char *value);
 int write_student_data();
 int append_student_data(Student *student);
 void free_student(Student *student);

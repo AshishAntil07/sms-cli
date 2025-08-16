@@ -5,6 +5,7 @@
 #include "cmd/help.h"
 #include "cmd/about.h"
 #include "cmd/add.h"
+#include "cmd/update.h"
 #include "cmd/remove.h"
 #include "cmd/list.h"
 

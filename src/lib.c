@@ -176,6 +176,34 @@ Student *get_next_student(CSVFile *csv)
   return student;
 }
 
+int update_student_property(Student *student, const char *property_name, const char *value)
+{
+  if (!student || !property_name || !value)
+    return 1;
+
+  void *property = get_matching_property(student, property_name);
+  if (!property)
+  {
+    printf("update_student_property: Unknown property '%s'.\n", property_name);
+    return 1;
+  }
+
+  if (strcmp(property_name, "roll") == 0)
+  {
+    *(long *)property = strtol((char *)value, NULL, 10);
+  }
+  else if (strcmp(property_name, "gender") == 0)
+  {
+    *(Gender *)property = *value == 'M' ? MALE : FEMALE;
+  }
+  else
+  {
+    *(char **)property = value;
+  }
+
+  return 0;
+}
+
 void *get_matching_property(Student *student, const char *property_name)
 {
   if (strcmp(property_name, "name") == 0)

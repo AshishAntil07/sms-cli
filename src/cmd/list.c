@@ -1,8 +1,5 @@
 #include "cmd/index.h"
-
-extern Vec *students;
-
-char *str_flags[] = {"--name", "--roll", "--gender", "--phone", "--email", "--f_name", "--m_name", "--address"};
+#include "index.h"
 
 int list_cmd(int argc, char *argv[])
 {
@@ -33,7 +30,7 @@ int list_cmd(int argc, char *argv[])
     }
     printf("Total students: %zu\n", students->size);
   }
-  else if (argc == 3 && is_str_in_array(str_flags, sizeof(str_flags) / sizeof(str_flags[0]), argv[1]))
+  else if (argc == 3 && is_str_in_array(property_flags, sizeof(property_flags) / sizeof(property_flags[0]), argv[1]))
   {
     char *property = argv[1] + 2; // Skip the "--" prefix
     char *value = argv[2];
@@ -96,7 +93,7 @@ Vec *get_students_by_property(const char *property, const char *value)
       }
       continue;
     }
-    
+
     if (property_value && strcmp(*(char **)property_value, value) == 0)
     {
       vec_push(result, student);

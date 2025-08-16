@@ -8,6 +8,8 @@
 extern Vec *commands;
 extern Vec *students;
 
+extern char *property_flags[8];
+
 void init();
 
 #endif

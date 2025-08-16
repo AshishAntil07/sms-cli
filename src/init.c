@@ -4,8 +4,10 @@
 #include "lib.h"
 #include <stdio.h>
 
-extern Vec *commands = NULL;
-extern Vec *students = NULL;
+Vec *commands = NULL;
+Vec *students = NULL;
+
+char *property_flags[8] = {"--name", "--roll", "--gender", "--phone", "--email", "--f_name", "--m_name", "--address"};
 
 void init()
 {
@@ -33,6 +35,14 @@ void init()
           .execute = add_cmd,
           .min_args = 1,
           .max_args = 8,
+      },
+      {
+          .name = "update",
+          .description = "Update student information",
+          .usage = "update <roll> ...(<property> <value>)",
+          .execute = update_cmd,
+          .min_args = 3,
+          .max_args = 1 + 2 * 8, // roll + 8 properties with values
       },
       {
           .name = "remove",

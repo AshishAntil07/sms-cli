@@ -70,6 +70,51 @@ With continued development, SMS CLI can evolve to include:
 - **Advanced Security**: Role-based access control and data encryption
 - **Cloud Synchronization**: Remote data backup and multi-device access
 
+## Project Tree
+
+```
+sms-cli
+├─ LICENSE
+├─ Makefile
+├─ README.md
+├─ config.h
+├─ inc
+│  ├─ cmd
+│  │  ├─ about.h
+│  │  ├─ add.h
+│  │  ├─ help.h
+│  │  ├─ index.h
+│  │  ├─ list.h
+│  │  ├─ remove.h
+│  │  └─ update.h
+│  ├─ index.h
+│  ├─ lib.h
+│  ├─ tests
+│  │  └─ index.h
+│  └─ utils
+│     ├─ utils.h
+│     └─ vec.h
+├─ src
+│  ├─ cmd
+│  │  ├─ about.c
+│  │  ├─ add.c
+│  │  ├─ help.c
+│  │  ├─ index.c
+│  │  ├─ list.c
+│  │  ├─ remove.c
+│  │  └─ update.c
+│  ├─ init.c
+│  ├─ lib.c
+│  ├─ main.c
+│  └─ utils
+│     ├─ utils.c
+│     └─ vec.c
+└─ tests
+   ├─ index.c
+   ├─ lib.test.c
+   └─ vec.test.c
+```
+
 ## Installation
 
 ### For Contributors (Development Setup)
@@ -210,6 +255,7 @@ Available properties for update and filtering:
 ### CSV Format
 
 The application uses the following CSV structure:
+
 ```csv
 roll,name,gender,phone,email,f_name,m_name,address
 240130800001,"John Doe",M,"123-456-7890","john@example.com","Father Name","Mother Name","123 Street, City"
@@ -217,6 +263,6 @@ roll,name,gender,phone,email,f_name,m_name,address
 
 ## Who's the daddy?
 
-This project is licensed under the MIT License - see the [`LICENSE`](LICENSE ) file for details.
+This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.
 
 **Copyright (c) 2025 Ashish Antil**

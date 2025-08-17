@@ -55,10 +55,10 @@ void init()
       {
           .name = "list",
           .description = "List all students from a category(if specified)",
-          .usage = "list [category] [value]",
+          .usage = "list ...[(<property> <value>) | (--roll <start> <end>)]",
           .execute = list_cmd,
           .min_args = 0,
-          .max_args = 2,
+          .max_args = 1000000,
       },
   };
 

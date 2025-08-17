@@ -42,7 +42,7 @@ Vec *parse_csv_record(const char *record)
       }
       else if (is_inside_quotes)
       {
-        if (record[i + 1] == ',' || record[i + 1] == '\0' || record[i+1] == '\n')
+        if (record[i + 1] == ',' || record[i + 1] == '\0' || record[i + 1] == '\n')
         {
           is_inside_quotes = 0;
           continue;
@@ -147,7 +147,7 @@ Student *get_next_student(CSVFile *csv)
   {
     char *cur_header = lower_case(*(char **)vec_get(csv->headers, i));
     char *value = *(char **)vec_get(parsed_record, i);
-    
+
     void *property = get_matching_property(student, cur_header);
     if (!property)
     {
@@ -169,14 +169,15 @@ Student *get_next_student(CSVFile *csv)
     }
   }
 
-  if(parsed_record->size < csv->headers->size) {
+  if (parsed_record->size < csv->headers->size)
+  {
     return NULL;
   }
-  
+
   return student;
 }
 
-int update_student_property(Student *student, const char *property_name, const char *value)
+int update_student_property(Student *student, const char *property_name, char *value)
 {
   if (!student || !property_name || !value)
     return 1;
@@ -335,6 +336,40 @@ int write_student_data()
   fprintf(file, "%s", write_str);
   fclose(file);
   free(write_str);
+  return 0;
+}
+
+int export_student_data(Vec *sv, char *path)
+{
+  if (!sv || sv->size == 0)
+  {
+    printf("export_student_data: No students to export.\n");
+    return 1;
+  }
+  if (!path)
+  {
+    printf("export_student_data: No path provided for export.\n");
+    return 1;
+  }
+
+  FILE *file = fopen(path, "w");
+  if (!file)
+  {
+    printf("export_student_data: Could not open file %s for writing.\n", path);
+    return 1;
+  }
+
+  fprintf(file, "roll,name,gender,phone,email,f_name,m_name,address\n");
+  for (size_t i = 0; i < sv->size; i++)
+  {
+    Student *student = (Student *)vec_get(sv, i);
+    if (student)
+    {
+      fprintf(file, "%s\n", get_student_csv_string(student, 256));
+    }
+  }
+
+  fclose(file);
   return 0;
 }
 

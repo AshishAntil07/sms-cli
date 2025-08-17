@@ -24,12 +24,25 @@ int list_cmd(int argc, char *argv[])
     }
     printf("Total students: %zu\n", students->size);
   }
-  else if (argc >= 3)
+  else if (argc >= 2)
   {
-
     Vec *filtered_students = students;
     for (size_t i = 1; i < argc; i += 2)
     {
+      if (strcmp(argv[i], "--export") == 0)
+      {
+        if (i + 1 >= argc)
+        {
+          printf("No export file specified.\n");
+          return 0;
+        }
+        char *export_file = argv[i + 1];
+        export_student_data(filtered_students, export_file);
+        printf("Exported student list to %s\n", export_file);
+
+        continue;
+      }
+
       if (!is_str_in_array(property_flags, sizeof(property_flags) / sizeof(property_flags[0]), argv[i]))
       {
         printf("Invalid property: %s\n", argv[i]);
@@ -39,7 +52,7 @@ int list_cmd(int argc, char *argv[])
       char *property = argv[i] + 2;
       char *value = argv[i + 1];
 
-      if (strcmp(property, "roll") == 0)
+      if (strcmp(property, "roll") == 0 && i + 2 < argc && strncmp(argv[i + 2], "--", 2) != 0)
       {
         long endroll = strtol(argv[++i + 1], NULL, 10);
         long roll = strtol(value, NULL, 10);

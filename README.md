@@ -60,7 +60,7 @@ Educational institutions often struggle with efficient student data management, 
 - **Bulk Processing**: Efficient handling of large student datasets
 - **Universal Compatibility**: CSV format ensures data portability across platforms
 
-### Future Potential
+## Future Potential
 
 With continued development, SMS CLI can evolve to include:
 

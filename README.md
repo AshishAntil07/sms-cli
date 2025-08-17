@@ -147,23 +147,19 @@ make clear
 ### For End Users (CLI Installation)
 
 1. **Download and build:**
-
-```bash
-git clone https://github.com/AshishAntil07/sms-cli.git
-cd sms-cli
-make neat
-```
+    - Go to the [latest release](https://github.com/AshishAntil07/sms-cli/releases/latest)  
+    - Download the `sms` file from **Assets**.
 
 2. **Add to PATH (Linux/macOS):**
 
 ```bash
-sudo cp dist/sms /usr/local/bin/
+sudo cp ~/Downloads/sms /usr/local/bin/
 ```
 
 3. **Add to PATH (Windows):**
 
 ```cmd
-copy dist\sms.exe C:\Windows\System32\
+copy %HOMEPATH%\Downloads\sms C:\Windows\System32\
 ```
 
 4. **Verify installation:**
@@ -261,7 +257,7 @@ roll,name,gender,phone,email,f_name,m_name,address
 240130800001,"John Doe",M,"123-456-7890","john@example.com","Father Name","Mother Name","123 Street, City"
 ```
 
-## Who's the daddy?
+## License
 
 This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.
 

@@ -1,5 +1,6 @@
 # Student Management System CLI
 
+[![Release](https://github.com/AshishAntil07/sms-cli/actions/workflows/release.yml/badge.svg)](https://github.com/AshishAntil07/sms-cli/actions/workflows/release.yml)
 ![Language](https://img.shields.io/badge/Language-C-blue.svg)
 ![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)

@@ -30,7 +30,7 @@ jobs:
             build: |
               sudo apt-get update
               sudo apt-get install -y mingw-w64
-              x86_64-w64-mingw32-gcc src/*.c -o dist/sms.exe
+              make CC=x86_64-w64-mingw32-gcc OUT=dist/sms.exe
             bin: dist/sms.exe
             archive: sms-windows-x64.zip
 

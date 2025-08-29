@@ -1,4 +1,4 @@
-CC = gcc
+CC ?= gcc
 TEST_CC = gdb
 CFLAGS = -Wall -Iinc
 SRC = $(shell find src -name '*.c')

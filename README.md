@@ -2,7 +2,7 @@
 
 [![Release](https://github.com/AshishAntil07/sms-cli/actions/workflows/release.yml/badge.svg)](https://github.com/AshishAntil07/sms-cli/actions/workflows/release.yml)
 ![Language](https://img.shields.io/badge/Language-C-blue.svg)
-![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)
+![Version](https://img.shields.io/badge/Version-1.1.4-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey.svg)
 ![Build](https://img.shields.io/badge/Build-Make-orange.svg)

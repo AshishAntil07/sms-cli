@@ -17,12 +17,12 @@ jobs:
         include:
           - os: ubuntu-latest
             target: linux-x64
-            build: make
+            build: make release
             bin: dist/sms
             archive: sms-linux-x64.tar.gz
           - os: macos-latest
             target: macos-x64
-            build: make
+            build: make release
             bin: dist/sms
             archive: sms-macos-x64.tar.gz
           - os: ubuntu-latest
@@ -30,7 +30,7 @@ jobs:
             build: |
               sudo apt-get update
               sudo apt-get install -y mingw-w64
-              make CC=x86_64-w64-mingw32-gcc OUT=dist/sms.exe
+              make release CC=x86_64-w64-mingw32-gcc OUT=dist/sms.exe
             bin: dist/sms.exe
             archive: sms-windows-x64.zip
 

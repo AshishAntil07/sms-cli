@@ -1,6 +1,7 @@
 CC ?= gcc
 TEST_CC = gdb
 CFLAGS = -Wall -Iinc
+LDFLAGS ?=
 SRC = $(shell find src -name '*.c')
 TEST_SRC = $(shell find tests -name '*.c')
 OBJ = $(SRC:.c=.o)
@@ -10,7 +11,10 @@ all: $(OUT)
 
 $(OUT): $(OBJ)
 	@mkdir -p dist
-	$(CC) $(OBJ) -o $(OUT)
+	$(CC) $(OBJ) -o $(OUT) $(LDFLAGS)
+
+release: clean
+	@make LDFLAGS="-s" OUT=$(OUT)
 
 neat:
 	@make

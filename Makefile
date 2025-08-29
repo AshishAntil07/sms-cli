@@ -9,11 +9,11 @@ OUT = dist/sms
 
 all: $(OUT)
 
-$(OUT): $(OBJ)
+$(OUT):
 	@mkdir -p dist
 	$(CC) $(OBJ) -o $(OUT) $(LDFLAGS)
 
-release: clean
+release:
 	@make LDFLAGS="-s" OUT=$(OUT)
 
 neat:

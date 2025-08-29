@@ -3,7 +3,7 @@
 
 #include "utils/vec.h"
 
-#define VERSION "1.0.0"
+#define VERSION "1.1.5"
 #define AUTHOR "Ashish Antil <ashishantil.antil07@gmail.com>"
 #define GITHUB "https://github.com/AshishAntil07/sms-cli.git"
 #define SSH "git@github.com:AshishAntil07/sms-cli.git"
@@ -12,7 +12,5 @@
 
 #define OUT_NAME "students.csv"
 #define OUT_DIR "./data/"
-
-extern Vec *commands;
 
 #endif

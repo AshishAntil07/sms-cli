@@ -60,6 +60,14 @@ void init()
           .min_args = 0,
           .max_args = 1000000,
       },
+      {
+          .name = "init",
+          .description = "Initialize the application in cwd",
+          .usage = "init",
+          .execute = init_cmd,
+          .min_args = 0,
+          .max_args = 0,
+      }
   };
 
   commands = vec_from_arr(cmds, sizeof(Command), sizeof(cmds));
@@ -81,11 +89,11 @@ void init()
   if (!csv)
   {
     fprintf(stderr, "Failed to read student data from CSV file.\n");
-    exit(EXIT_FAILURE);
+    // exit(EXIT_FAILURE);
   }
 
   for (Student *student = get_next_student(csv); student; student = get_next_student(csv))
     vec_push(students, student);
 
-  free_student_data(csv);
+  if(csv) free_student_data(csv);
 }

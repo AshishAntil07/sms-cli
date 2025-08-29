@@ -8,6 +8,7 @@
 #include "cmd/update.h"
 #include "cmd/remove.h"
 #include "cmd/list.h"
+#include "cmd/init_cmd.h"
 
 typedef struct {
   char *name;          // Name of the command

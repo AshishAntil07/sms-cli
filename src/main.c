@@ -9,6 +9,12 @@
 
 int main(int argc, char *argv[])
 {
+  if (argc == 2 && strcmp(argv[1], "init") == 0)
+  {
+    init_cmd(argc - 1, argv + 1);
+    return 0;
+  }
+
   init();
 
 #ifndef TEST

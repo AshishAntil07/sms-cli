@@ -1,7 +1,5 @@
 #include "index.h"
 
-extern Vec *students;
-
 Vec *parse_csv_record(const char *record)
 {
   Vec *vec = vec_create(sizeof(char *));
@@ -97,19 +95,6 @@ CSVFile *read_student_data(char *fileurl)
     free(csv);
     return NULL;
   }
-
-  // if(fileurl) {
-  //   printf("%zu\n", csv->headers->size);
-  //   printf("header_str: %s\n", header_str);
-  //   for (size_t i = 0; i < csv->headers->size; i++)
-  //   {
-  //     char *header = *(char **)vec_get(csv->headers, i);
-  //     if (header)
-  //     {
-  //       printf("Header %zu: %s\n", i, header);
-  //     }
-  //   }
-  // }
 
   return csv;
 }
@@ -328,9 +313,13 @@ int write_student_data()
   FILE *file = fopen(fileurl, "w");
   if (!file)
   {
-    printf("write_student_data: Could not open file %s for writing.\n", fileurl);
-    free(write_str);
-    return 1;
+    make_dir(OUT_DIR);
+    file = fopen(OUT_DIR OUT_NAME, "w");
+    if (file == NULL)
+    {
+      printf("write_student_data: Could not open file %s%s for writing.\n", OUT_DIR, OUT_NAME);
+      return 1;
+    }
   }
 
   fprintf(file, "%s", write_str);

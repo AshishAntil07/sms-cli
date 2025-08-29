@@ -1,6 +1,8 @@
 #include <stdio.h>
-#include "cmd/about.h"
+#include "cmd/index.h"
 #include "../config.h"
+#include "index.h"
+#include "utils/utils.h"
 
 int about_cmd(int argc, char *argv[])
 {
@@ -14,14 +16,11 @@ Usage: sms [command] [options]\n\
 ",
      VERSION, PROJECT_DESCRIPTION, GITHUB, SSH, AUTHOR);
 
-  printf("\
-Available commands:\n\
-  about - Show this information about the project\n\
-  help - Show help message(general or specific)\n\
-  add - Add a new student or merge student information\n\
-  list - List all students\n\
-  remove - Remove a student\n\
-  update - Update student information\n");
+  printf("Available commands:\n");
+  for(size_t i = 0; i < commands->size; i++) {
+    Command *cmd = vec_get(commands, i);
+    printf("  %s - %s\n", pad_end(cmd->name, ' ', 10), cmd->description);
+  }
 
   return 0;
 }

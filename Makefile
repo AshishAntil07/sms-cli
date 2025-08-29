@@ -5,15 +5,15 @@ LDFLAGS ?=
 SRC = $(shell find src -name '*.c')
 TEST_SRC = $(shell find tests -name '*.c')
 OBJ = $(SRC:.c=.o)
-OUT = dist/sms
+OUT ?= dist/sms
 
 all: $(OUT)
 
-$(OUT):
+$(OUT): $(OBJ)
 	@mkdir -p dist
 	$(CC) $(OBJ) -o $(OUT) $(LDFLAGS)
 
-release:
+release: clear
 	@make LDFLAGS="-s" OUT=$(OUT)
 
 neat:

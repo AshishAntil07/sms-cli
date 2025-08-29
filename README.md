@@ -73,7 +73,7 @@ With continued development, SMS CLI can evolve to include:
 
 ## Project Tree
 
-```
+```text
 sms-cli
 ├─ LICENSE
 ├─ Makefile
@@ -122,52 +122,47 @@ sms-cli
 
 1. **Clone the repository:**
 
-```bash
-git clone https://github.com/AshishAntil07/sms-cli.git
-cd sms-cli
-```
+    ```bash
+    git clone https://github.com/AshishAntil07/sms-cli.git
+    cd sms-cli
+    ```
 
 2. **Build the project:**
 
-```bash
-make
-```
+    ```bash
+    make
+    ```
 
 3. **Run tests:**
 
-```bash
-make test-neat
-```
-
-4. **Clean build files:**
-
-```bash
-make clear
-```
+    ```bash
+    make test-neat
+    ```
 
 ### For End Users (CLI Installation)
 
 1. **Download and build:**
     - Go to the [latest release](https://github.com/AshishAntil07/sms-cli/releases/latest)  
-    - Download the `sms` file from **Assets**.
+    - Download the zip file corresponding to your platform from **Assets**.
+    - Extract zip contents
 
 2. **Add to PATH (Linux/macOS):**
 
-```bash
-sudo cp ~/Downloads/sms /usr/local/bin/
-```
+    ```bash
+    sudo cp ~/path/to/binary/sms /usr/local/bin/
+    ```
 
 3. **Add to PATH (Windows):**
 
-```cmd
-copy %HOMEPATH%\Downloads\sms C:\Windows\System32\
-```
+    ```cmd
+    copy path\to\binary\sms.exe C:\Windows\System32\
+    ```
 
 4. **Verify installation:**
 
-```bash
-sms about
-```
+    ```bash
+    sms about
+    ```
 
 ## Usage
 
@@ -238,7 +233,7 @@ sms about                   # Show application information and version
 
 ### Property Flags
 
-Available properties for update and filtering:
+Available properties for update, operate and filtering:
 
 - `--name`: Student full name
 - `--roll`: Roll number
@@ -248,6 +243,7 @@ Available properties for update and filtering:
 - `--f_name`: Father's name
 - `--m_name`: Mother's name
 - `--address`: Address
+- `--export`: Export csv to destination
 
 ### CSV Format
 
@@ -261,5 +257,4 @@ roll,name,gender,phone,email,f_name,m_name,address
 ## License
 
 This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.
-
 **Copyright (c) 2025 Ashish Antil**

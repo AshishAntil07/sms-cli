@@ -54,13 +54,13 @@ int list_cmd(int argc, char *argv[])
 
       if (strcmp(property, "roll") == 0 && i + 2 < argc && strncmp(argv[i + 2], "--", 2) != 0)
       {
-        long endroll = strtol(argv[++i + 1], NULL, 10);
-        long roll = strtol(value, NULL, 10);
+        long long endroll = strtol(argv[++i + 1], NULL, 10);
+        long long roll = strtol(value, NULL, 10);
 
         filtered_students = get_students_in_range(filtered_students, property, roll, endroll);
 
         if(filtered_students == NULL || filtered_students->size == 0) {
-          printf("No students found in roll range %ld to %ld\n", roll, endroll);
+          printf("No students found in roll range %lld to %lld\n", roll, endroll);
           return 0;
         }
         continue;
@@ -114,7 +114,7 @@ Vec *get_students_by_property(Vec *sv, const char *property, const char *value)
     void *property_value = get_matching_property(student, property);
     if (strcmp(property, "roll") == 0)
     {
-      if (property_value && *(long *)property_value == strtol(value, NULL, 10))
+      if (property_value && *(long long *)property_value == strtol(value, NULL, 10))
       {
         vec_push(result, student);
       }
@@ -137,14 +137,14 @@ Vec *get_students_by_property(Vec *sv, const char *property, const char *value)
   return result;
 }
 
-Vec *get_students_in_range(Vec *sv, const char *property, long start, long end)
+Vec *get_students_in_range(Vec *sv, const char *property, long long start, long long end)
 {
   Vec *result = vec_create(sizeof(Student));
   for (size_t i = 0; i < sv->size; i++)
   {
     Student *student = (Student *)vec_get(sv, i);
     void *property_value = get_matching_property(student, property);
-    if (property_value && *(long *)property_value >= start && *(long *)property_value <= end)
+    if (property_value && *(long long *)property_value >= start && *(long long *)property_value <= end)
     {
       vec_push(result, student);
     }

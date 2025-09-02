@@ -3,7 +3,7 @@
 
 #include "utils/vec.h"
 
-#define VERSION "1.1.5"
+#define VERSION "1.1.6"
 #define AUTHOR "Ashish Antil <ashishantil.antil07@gmail.com>"
 #define GITHUB "https://github.com/AshishAntil07/sms-cli.git"
 #define SSH "git@github.com:AshishAntil07/sms-cli.git"

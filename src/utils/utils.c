@@ -81,7 +81,7 @@ char *get_student_csv_string(Student *student, size_t len)
   if (!csv_string)
     return NULL;
 
-  snprintf(csv_string, len, "\"%ld\",\"%s\",\"%c\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+  snprintf(csv_string, len, "\"%lld\",\"%s\",\"%c\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
            student->roll, make_csv_friendly(student->name), student->gender, make_csv_friendly(student->phone), make_csv_friendly(student->email), make_csv_friendly(student->f_name), make_csv_friendly(student->m_name), make_csv_friendly(student->address));
 
   return csv_string;
@@ -100,7 +100,7 @@ PadStudent *get_pad_student(Vec *students)
   {
     Student *student = vec_get(students, i);
     char *roll = calloc(13, sizeof(char));
-    sprintf(roll, "%ld", student->roll);
+    sprintf(roll, "%lld", student->roll);
 
     if (!pad->name || strlen(student->name) > pad->name - DEFAULT_PAD_SIZE)
       pad->name = strlen(student->name) + DEFAULT_PAD_SIZE;
@@ -167,7 +167,7 @@ char **get_student_string(Vec *students, PadStudent *stpad)
 
     Student *student = vec_get(students, i);
     char *roll = calloc(13, sizeof(char));
-    sprintf(roll, "%ld", student->roll);
+    sprintf(roll, "%lld", student->roll);
 
     snprintf(student_strings[i], 256, "%s%s%s%s%s%s%s%s",
              pad_end(roll, ' ', pad->roll),

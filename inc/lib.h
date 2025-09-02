@@ -35,7 +35,7 @@ typedef struct Marks
 typedef struct Student
 {
   char *name;
-  long roll;
+  long long roll;
   char *phone;
   char *email;
   char *f_name;

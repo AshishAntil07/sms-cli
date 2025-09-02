@@ -52,20 +52,20 @@ int add_cmd(int argc, char *argv[])
 
     if (existing_student)
     {
-      printf("add_cmd: Student with roll no. %ld already exists. Merging data...\n", new_student->roll);
+      printf("add_cmd: Student with roll no. %lld already exists. Merging data...\n", new_student->roll);
       cpy_partial_student(new_student, existing_student);
       write_student_data();
     }
     else if (append_student_data(new_student) != 0)
     {
-      printf("add_cmd: Failed to write student data(roll no. %ld).\n", new_student->roll);
+      printf("add_cmd: Failed to write student data(roll no. %lld).\n", new_student->roll);
     }
 
     printf("Successfully added student!\n");
   }
   else if (argc == 2 || (argc == 3 && strcmp(argv[1], "--csv") == 0))
   {
-    CSVFile *csv = read_student_data(argv[(argc == 3 && strcmp(argv[2], "--csv") == 0)?2:1]);
+    CSVFile *csv = read_student_data(argv[(argc == 3 && strcmp(argv[1], "--csv") == 0)?2:1]);
     if (csv)
     {
       new_student = get_next_student(csv);
@@ -85,7 +85,7 @@ int add_cmd(int argc, char *argv[])
 
         if (existing_student)
         {
-          printf("add_cmd: Student with roll no. %ld already exists. Merging data...\n", new_student->roll);
+          printf("add_cmd: Student with roll no. %lld already exists. Merging data...\n", new_student->roll);
           cpy_partial_student(new_student, existing_student);
         }
         else

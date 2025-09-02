@@ -7,7 +7,7 @@ int remove_cmd(int argc, char *argv[])
 {
   for (size_t i = 1; i < argc; i++)
   {
-    long roll = strtol(argv[i], NULL, 10);
+    long long roll = strtol(argv[i], NULL, 10);
     if (roll <= 0)
     {
       printf("Invalid roll number: %s\n", argv[i]);
@@ -22,13 +22,13 @@ int remove_cmd(int argc, char *argv[])
       {
         vec_remove(students, i);
         removed = 1;
-        printf("Removed student with roll no. %ld.\n", roll);
+        printf("Removed student with roll no. %lld.\n", roll);
         break;
       }
     }
     
     if (!removed)
-    printf("No student found with roll no. %ld.\n", roll);
+    printf("No student found with roll no. %lld.\n", roll);
   }
   
   write_student_data();

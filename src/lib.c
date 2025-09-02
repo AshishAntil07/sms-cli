@@ -142,7 +142,7 @@ Student *get_next_student(CSVFile *csv)
 
     if (strcmp(cur_header, "roll") == 0)
     {
-      *(long *)property = strtol(value, NULL, 10);
+      *(long long *)property = strtol(value, NULL, 10);
     }
     else if (strcmp(cur_header, "gender") == 0)
     {
@@ -176,7 +176,7 @@ int update_student_property(Student *student, const char *property_name, char *v
 
   if (strcmp(property_name, "roll") == 0)
   {
-    *(long *)property = strtol((char *)value, NULL, 10);
+    *(long long *)property = strtol((char *)value, NULL, 10);
   }
   else if (strcmp(property_name, "gender") == 0)
   {
@@ -248,7 +248,7 @@ void cpy_partial_student(Student *source, Student *dest)
           {
             is_unique = 0;
             int choice;
-            printf("Colliding marks found for roll no. %ld (%d sem) in subject %s\n  Choose one of the action - (0) retain   (1) override", source_marks->student->roll, source_marks->semester, source_marks->subject);
+            printf("Colliding marks found for roll no. %lld (%d sem) in subject %s\n  Choose one of the action - (0) retain   (1) override", source_marks->student->roll, source_marks->semester, source_marks->subject);
             scanf("%d", &choice);
 
             switch (choice)
@@ -369,7 +369,7 @@ int append_student_data(Student *student)
     printf("append_student_data: Student is NULL.\n");
     return 1;
   }
-  printf("append_student_data: Writing student data for roll no. %ld\n", student->roll);
+  printf("append_student_data: Writing student data for roll no. %lld\n", student->roll);
   FILE *file = fopen(OUT_DIR OUT_NAME, "a");
 
   if (!file)
